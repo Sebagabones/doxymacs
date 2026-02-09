@@ -375,11 +375,11 @@ variable `doxymacs-doxygen-dirs'."
                                    "\\[\\(?:in\\|out\\|in,out\\)\\]\\)?"
                                    "\\s-+\\sw+"
                                    "\\|tparam\\s-+\\sw+"
-                                   "\\|return\\|attention\\|note"
-                                   "\\|brief\\|li\\|arg\\|remarks"
+                                   "\\|returns?\\|attention\\|note"
+                                   "\\|brief\\|short\\|li\\|arg\\|remarks"
                                    "\\|invariant\\|post\\|pre"
                                    "\\|todo\\|warning\\|bug"
-                                   "\\|deprecated\\|since\\|test\\)")))
+                                   "\\|deprecated\\|details\\|since\\|test\\)")))
         (unless (assoc bullet-regexp filladapt-token-table)
           (setq filladapt-token-table
                 (append filladapt-token-table
@@ -438,17 +438,17 @@ customize `doxymacs-use-external-xml-parser' to enable it."
    (list
     ;; One shot keywords that take no arguments
     (concat "\\([@\\\\]\\(brief\\|li\\|\\(end\\)?code\\|sa"
-            "\\|note\\|\\(end\\)?verbatim\\|return\\|arg\\|fn"
+            "\\|note\\|\\(end\\)?verbatim\\|\\(end\\)?parblock\\|returns?\\|arg\\|fn"
             "\\|hideinitializer\\|showinitializer"
             ;; FIXME
             ;; How do I get & # < > % to work?
             ;;"\\|\\\\&\\|\\$\\|\\#\\|<\\|>\\|\\%"
             "\\|\\$"
-            "\\|internal\\|nosubgrouping\\|author\\|date\\|endif"
-            "\\|invariant\\|post\\|pre\\|remarks\\|since\\|test\\|version"
+            "\\|internal\\|nosubgrouping\\|authors?\\|date\\|endif"
+            "\\|invariant\\|post\\|pre\\|remarks?\\|since\\|test\\|version"
             "\\|\\(end\\)?htmlonly\\|\\(end\\)?latexonly\\|f\\$\\|file"
             "\\|\\(end\\)?xmlonly\\|\\(end\\)?manonly\\|property"
-            "\\|mainpage\\|name\\|overload\\|typedef\\|deprecated\\|par"
+            "\\|mainpage\\|name\\|overload\\|typedef\\|deprecated\\|details\\|par"
             "\\|addindex\\|line\\|skip\\|skipline\\|until\\|see"
             "\\|endlink\\|callgraph\\|endcond\\|else\\)\\)\\>")
     '(0 font-lock-keyword-face prepend))
@@ -459,13 +459,13 @@ customize `doxymacs-use-external-xml-parser' to enable it."
    ;; keywords that take a variable name as an argument
    (list
     (concat "\\([@\\\\]\\(param\\(?:\\s-*\\[\\(?:in\\|out\\|in,out\\)\\]\\)?"
-            "\\|tparam\\|a\\|namespace\\|relates\\(also\\)?"
+            "\\|tparam\\|a\\|namespace\\|relate[sd]\\(also\\)?"
             "\\|var\\|def\\)\\)\\s-+\\(\\sw+\\)")
     '(1 font-lock-keyword-face prepend)
     '(4 font-lock-variable-name-face prepend))
    ;; keywords that take a type name as an argument
    (list
-    (concat "\\([@\\\\]\\(class\\|struct\\|union\\|exception\\|enum"
+    (concat "\\([@\\\\]\\(class\\|struct\\|union\\|exception\\|throws?\\|enum"
             "\\|throw\\|interface\\|protocol\\)\\)\\s-+\\(\\(\\sw\\|:\\)+\\)")
     '(1 font-lock-keyword-face prepend)
     '(3 font-lock-type-face prepend))
@@ -998,8 +998,10 @@ filter possible completions."
     ("arg" "Argument description")
     ("attention" "Attention text")
     ("author" "List of authors")
+    ("authors" "List of authors")
     ("b" (word "Word to display in bold"))
     ("brief" "Brief description")
+    ("short" "Brief description")
     ("bug" "Bug description")
     ("c" "Word to display as code")
     ("callgraph")
@@ -1035,11 +1037,14 @@ filter possible completions."
     ("endlink")
     ("endmanonly")
     ("endmsc")
+    ("endparblock" "Ends a block of paragraphs started with parblock")
     ("endverbatim")
     ("endxmlonly")
     ("enum" (word "Enumeration name"))
     ("example" (word "File name"))
     ("exception" (word "Exception object") "Exception description")
+    ("throw" (word "Exception object") "Exception description")
+    ("throws" (word "Exception object") "Exception description")
     ("extends" (word "Name"))
     ("f$")
     ("f[")
@@ -1087,6 +1092,7 @@ filter possible completions."
     ("param[in]" (word "Parameter") "Parameter description")
     ("param[out]" (word "Parameter") "Parameter description")
     ("param[in,out]" (word "Parameter") "Parameter description")
+    ("parblock" "Starts a description that covers multiple paragraphs, which then ends with endparblock")
     ("post" "Post-condition description")
     ("pre" "Pre-condition description")
     ("private")
@@ -1100,9 +1106,13 @@ filter possible completions."
     ("publicsection")
     ("ref" (word "Name") (newline optional "Text"))
     ("relates" (word "Name"))
+    ("related" (word "Name"))
     ("relatesalso" (word "Name"))
+    ("relatedalso" (word "Name"))
     ("remarks" "Remarks text")
+    ("remark" "Remarks text")
     ("return" "Description of return value")
+    ("returns" "Description of return value")
     ("retval" (word "Return value") "Description")
     ("sa" "References")
     ("section" (word "Section name") (newline "Section title"))
