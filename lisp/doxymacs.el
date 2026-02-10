@@ -460,13 +460,13 @@ customize `doxymacs-use-external-xml-parser' to enable it."
    (list
     (concat "\\([@\\\\]\\(param\\(?:\\s-*\\[\\(?:in\\|out\\|in,out\\)\\]\\)?"
             "\\|tparam\\|a\\|namespace\\|relates\\(also\\)?"
-            "\\|var\\|def\\)\\)\\s-+\\(\\sw+\\)")
+            "\\|var\\|def\\)\\)\\s-\+\\(\\(\\sw\\|_\\)+\\)")
     '(1 font-lock-keyword-face prepend)
     '(4 font-lock-variable-name-face prepend))
    ;; keywords that take a type name as an argument
    (list
     (concat "\\([@\\\\]\\(class\\|struct\\|union\\|exception\\|enum"
-            "\\|throw\\|interface\\|protocol\\)\\)\\s-+\\(\\(\\sw\\|:\\)+\\)")
+            "\\|throw\\|interface\\|protocol\\)\\)\\s-+\\(\\(\\sw\\|:\\|_\\)+\\)")
     '(1 font-lock-keyword-face prepend)
     '(3 font-lock-type-face prepend))
    ;; keywords that take a function name as an argument
